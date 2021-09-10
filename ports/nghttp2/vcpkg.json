@@ -8,5 +8,18 @@
       "name": "vcpkg-cmake",
       "host": true
     }
-  ]
+  ],
+  "features": {
+    "asio": {
+      "description": "build libnghttp2_asio",
+      "dependencies": [
+        "boost-asio",
+        "zlib",
+        {
+          "name": "getopt",
+          "platform": "windows"
+        }
+      ]
+    }
+  }
 }

@@ -3,6 +3,10 @@ vcpkg_from_github(
     REPO nghttp2/nghttp2
     REF b799b063f882cc97f8484e95b41d0326260d9b93 # v1.44.0
     SHA512 8e4a5d0b146606d1150b43c539244f615540bc25eab30bf67c673cccecdb3d4a02d99fb0136d81dc7ad4a579d9b38e62d91b1431884a8891c0d325c036cc4073
+    PATCHES 
+        001-fix-asio-static-build.patch
+        002-fix-asio-msvc-build.patch
+        003-fix-msvc-dll-exports.patch
     HEAD_REF master
 )
 
@@ -10,11 +14,17 @@ string(COMPARE EQUAL "${VCPKG_CRT_LINKAGE}" "static" ENABLE_STATIC_CRT)
 string(COMPARE EQUAL "${VCPKG_LIBRARY_LINKAGE}" "static" ENABLE_STATIC_LIB)
 string(COMPARE EQUAL "${VCPKG_LIBRARY_LINKAGE}" "dynamic" ENABLE_SHARED_LIB)
 
+if("asio" IN_LIST FEATURES)
+    set(ENABLE_ASIO ON)
+else()
+    set(ENABLE_ASIO OFF)
+endif()
+
 vcpkg_cmake_configure(
     SOURCE_PATH "${SOURCE_PATH}"
     OPTIONS
         -DENABLE_LIB_ONLY=ON
-        -DENABLE_ASIO_LIB=OFF
+        "-DENABLE_ASIO_LIB=${ENABLE_ASIO}"
         "-DENABLE_STATIC_CRT=${ENABLE_STATIC_CRT}"
         "-DENABLE_STATIC_LIB=${ENABLE_STATIC_LIB}"
         "-DENABLE_SHARED_LIB=${ENABLE_SHARED_LIB}"

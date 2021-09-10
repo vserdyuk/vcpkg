@@ -1,0 +1,14 @@
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 30b52ae6..08f79b98 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -269,6 +269,9 @@ if(ENABLE_ASIO_LIB)
+   )
+   if(WIN32)
+     target_compile_definitions(nghttp2_asio PRIVATE NOMINMAX)
++    if(NOT ENABLE_STATIC_LIB)
++      set_target_properties(nghttp2_asio PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
++    endif()
+   endif()
+   target_link_libraries(nghttp2_asio
+     ${NGHTTP2_TARGET}
